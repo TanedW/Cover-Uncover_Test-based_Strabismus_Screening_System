@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>การตรวจโรคตาเข</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+  
+    * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Kanit', sans-serif;
+    background: linear-gradient(to right, #e3f2fd, #ffffff);
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    width: 100%;
+    background: #00809D;
+    color: #fff;
+    padding: 18px 0 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1200;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .navbar .app-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-left: 32px;
+    letter-spacing: 1px;
+  }
+  .navbar .home-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    margin-right: 32px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .navbar .home-btn:hover {
+    color: #ffd600;
+  }
+
+  .hamburger {
+    user-select: none;
+    transition: 0.3s ease;
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    font-size: 32px;
+    cursor: pointer;
+    background-color: #f5e0cd;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1100;
+    color: #00809D;
+    border: none;
+  }
+  .hamburger.active {
+    color: #c62828;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 240px;
+    height: 100%;
+    background: #FAF7F3;
+    color: #333;
+    padding: 30px 20px 20px 20px;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+    transition: left 0.3s cubic-bezier(.77,0,.18,1);
+    z-index: 1000;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  .sidebar .close-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #c62828;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .sidebar .close-btn:hover {
+    color: #00809D;
+  }
+  .sidebar h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+    color: #77BEF0;
+    text-align: center;
+  }
+  .sidebar ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+  }
+  .sidebar ul li {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  .sidebar ul li:hover {
+    transform: scale(1.07);
+    border-color: #77BEF0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  }
+  .sidebar ul li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+  }
+  .sidebar ul li[title]:hover:after {
+    content: attr(title);
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    transform: translateX(-50%);
+    background: #00809D;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .container {
+    background: #FFF8F8;
+    padding: 48px 32px 32px 32px;
+    border-radius: 25px;
+    max-width: 1000px;
+    width: 95%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    margin: 120px auto 40px auto;
+    transition: margin-left 0.3s cubic-bezier(.77,0,.18,1);
+  }
+  .sidebar.active ~ .container {
+    margin-left: 260px;
+  }
+  h1 {
+    font-size: 2.5rem;
+    color: #00809D;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  .eyes-section {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .eye-box {
+    flex: 1 1 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 10px 10px 20px #cfd8dc, -10px -10px 20px #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 80%;
+    margin: 0 auto 20px;
+  }
+  img#characterImage {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  #combinedVideoElement,
+  #overlayCanvas {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .ctrl-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-open {
+    background: linear-gradient(to bottom, #66bb6a, #388e3c);
+  }
+  .btn-open:hover {
+    background: linear-gradient(to bottom, #81c784, #2e7d32);
+  }
+  .btn-close {
+    background: linear-gradient(to bottom, #ef5350, #c62828);
+  }
+  .btn-close:hover {
+    background: linear-gradient(to bottom, #e57373, #b71c1c);
+  }
+  .start-btn, .back-btn {
+    padding: 16px 36px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.13);
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .start-btn {
+    background-color: #00ce26;
+    color: white;
+  }
+  .start-btn:hover {
+    background-color: #17d73a;
+    transform: translateY(-2px) scale(1.04);
+  }
+  .back-btn {
+    background-color: #ff7043;
+    color: white;
+  }
+  .back-btn:hover {
+    background-color: #e64a19;
+    transform: translateY(-2px) scale(1.04);
+  }
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin: 50px 0 30px;
+    flex-wrap: wrap;
+  }
+  .result-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #c62828;
+    background: #fff3e0;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(255,152,0,0.08);
+    padding: 18px 28px;
+    margin: 40px auto 15px auto;
+    max-width: 500px;
+  }
+  .result-card .fa-triangle-exclamation {
+    color: #ff9800;
+    font-size: 2rem;
+  }
+  .advice-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 1.2rem;
+    color: #2e7d32;
+    background: #e8f5e9;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(76,175,80,0.07);
+    padding: 14px 22px;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .advice-card .fa-circle-info {
+    color: #43a047;
+    font-size: 1.5rem;
+  }
+  .footer {
+    font-size: 14px;
+    color: #78909c;
+    margin-top: 25px;
+  }
+  @media (max-width: 900px) {
+    .container {
+      padding: 32px 8px 24px 8px;
+    }
+    .sidebar {
+      width: 200px;
+      left: -200px;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar ul {
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    }
+  }
+  @media (max-width: 768px) {
+    .eyes-section {
+      flex-direction: column;
+      align-items: center;
+    }
+    .eye-box {
+      width: 100%;
+    }
+    .button-row {
+      flex-direction: column;
+      gap: 18px;
+    }
+    .controls {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .navbar .app-title, .navbar .home-btn {
+      margin-left: 12px;
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+  }
+  @media (max-width: 500px) {
+    .container {
+      margin: 90px 2vw 20px 2vw;
+      padding: 16px 2vw 12px 2vw;
+    }
+    .sidebar {
+      width: 100vw;
+      left: -100vw;
+      padding: 18px 8px 8px 8px;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar h2 {
+      font-size: 1.1rem;
+    }
+    .sidebar ul {
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+  }
+  </style>
+</head>
+<body>
+<div class="navbar">
+    <span class="app-title"><i class="fa-solid fa-eye"></i> ระบบตรวจโรคตาเข</span>
+    <button class="home-btn" onclick="window.location.href='index.html'" aria-label="กลับหน้าหลัก"><i class="fa-solid fa-house"></i> กลับหน้าหลัก</button>
+</div>
+  <button class="hamburger" id="hamburger" aria-label="เมนู" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()" aria-label="ปิดเมนู"><i class="fa-solid fa-xmark"></i></button>
+    <h2>เลือกตัวละคร</h2>
+    <ul>
+      <li onclick="changeCharacter('character/kuromi.gif')" title="Kuromi">
+        <img src="character/kuromi.gif" alt="Kuromi" />
+      </li>
+      <li onclick="changeCharacter('character/kuromi1.gif')" title="Kuromi">
+        <img src="character/kuromi1.gif" alt="Kuromi" />
+      </li>
+      <li onclick="changeCharacter('character/kuromi2.gif')" title="Kuromi">
+        <img src="character/kuromi2.gif" alt="Kuromi" />
+      </li>
+      <li onclick="changeCharacter('character/kuromi3.gif')" title="Kuromi">
+        <img src="character/kuromi3.gif" alt="Kuromi" />
+      </li>
+      <li onclick="changeCharacter('character/kuromi4.gif')" title="Kuromi">
+        <img src="character/kuromi4.gif" alt="Kuromi" />
+      </li>
+      <li onclick="changeCharacter('character/mymelody.gif')" title="My Melody">
+        <img src="character/mymelody.gif" alt="My Melody" />
+      </li>
+      <li onclick="changeCharacter('character/kittty.gif')" title="Kitty">
+        <img src="character/kittty.gif" alt="Kitty" />
+      </li>
+      <li onclick="changeCharacter('character/Pochacco.gif')" title="Pochacco">
+        <img src="character/Pochacco.gif" alt="Pochacco" />
+      </li>
+      <li onclick="changeCharacter('character/Pochacco1.gif')" title="Pochacco">
+        <img src="character/Pochacco1.gif" alt="Pochacco" />
+      </li>
+      <li onclick="changeCharacter('character/Pochacco2.gif')" title="Pochacco">
+        <img src="character/Pochacco2.gif" alt="Pochacco" />
+      </li>
+      <li onclick="changeCharacter('character/Pochacco3.webp')" title="Pochacco">
+        <img src="character/Pochacco3.webp" alt="Pochacco" />
+      </li>
+      <li onclick="changeCharacter('character/Cinnamoroll.gif')" title="Cinnamoroll">
+        <img src="character/Cinnamoroll.gif" alt="Cinnamoroll" />
+      </li>
+      <li onclick="changeCharacter('character/Cinnamoroll1.gif')" title="Cinnamoroll">
+        <img src="character/Cinnamoroll1.gif" alt="Cinnamoroll" />
+      </li>
+      <li onclick="changeCharacter('character/Cinnamoroll2.gif')" title="Cinnamoroll">
+        <img src="character/Cinnamoroll2.gif" alt="Cinnamoroll" />
+      </li>
+      <li onclick="changeCharacter('character/crybaby.jpg')" title="crybaby">
+        <img src="character/crybaby.jpg" alt="crybaby" />
+      </li> 
+      <li onclick="changeCharacter('character/conan.gif')" title="Conan">
+        <img src="character/conan.gif" alt="Conan" />
+      </li>
+      <li onclick="changeCharacter('character/doraemon.gif')" title="doraemon">
+        <img src="character/doraemon.gif" alt="doraemon" />
+      </li>
+      <li onclick="changeCharacter('character/doraemon1.gif')" title="doraemon">
+        <img src="character/doraemon1.gif" alt="doraemon" />
+      </li>
+      <li onclick="changeCharacter('character/doraemon2.gif')" title="doraemon">
+        <img src="character/doraemon2.gif" alt="doraemon" />
+      </li>
+      <li onclick="changeCharacter('character/scooby.gif')" title="Scoopy Doo">
+        <img src="character/scooby.gif" alt="Scoopy Doo" />
+      </li>
+      <li onclick="changeCharacter('character/scooby1.gif')" title="Scoopy Doo">
+        <img src="character/scooby1.gif" alt="Scoopy Doo" />
+      </li>  
+      <li onclick="changeCharacter('character/shin.gif')" title="shin chan">
+        <img src="character/shin.gif" alt="shin chan" />
+      </li>
+      <li onclick="changeCharacter('character/shin1.gif')" title="shin chan">
+        <img src="character/shin1.gif" alt="shin chan" />
+      </li>
+      <li onclick="changeCharacter('character/shin2.gif')" title="shin chan">
+        <img src="character/shin2.gif" alt="shin chan" />
+      </li>
+      <li onclick="changeCharacter('character/mlp.gif')" title="my little pony">
+        <img src="character/mlp.gif" alt="my little pony" />
+      </li>
+      <li onclick="changeCharacter('character/mlp1.gif')" title="my little pony">
+        <img src="character/mlp1.gif" alt="my little pony" />
+      </li>
+      <li onclick="changeCharacter('character/mlp2.gif')" title="my little pony">
+        <img src="character/mlp2.gif" alt="my little pony" />
+      </li>      
+      <li onclick="changeCharacter('character/mlp3.gif')" title="my little pony">
+        <img src="character/mlp3.gif" alt="my little pony" />
+      </li> 
+      <li onclick="changeCharacter('character/mlp4.gif')" title="my little pony">
+        <img src="character/mlp4.gif" alt="my little pony" />
+      </li>   
+      <li onclick="changeCharacter('character/iron.gif')" title="iron man">
+        <img src="character/iron.gif" alt="iron man" />
+      </li>
+      <li onclick="changeCharacter('character/iron2.gif')" title="iron man">
+        <img src="character/iron2.gif" alt="iron man" />
+      </li>
+      <li onclick="changeCharacter('character/iron1.gif')" title="iron man">
+        <img src="character/iron1.gif" alt="iron man" />
+      </li>
+      <li onclick="changeCharacter('character/iron3.gif')" title="iron man">
+        <img src="character/iron3.gif" alt="iron man" />
+      </li>
+      <li onclick="changeCharacter('character/spider2.gif')" title="spider man">
+        <img src="character/spider2.gif" alt="spider man" />
+      </li>
+      <li onclick="changeCharacter('character/spider1.gif')" title="spider man">
+        <img src="character/spider1.gif" alt="spider man" />
+      </li> 
+      <li onclick="changeCharacter('character/spider.gif')" title="spider man">
+        <img src="character/spider.gif" alt="spider man" />
+      </li>
+      <li onclick="changeCharacter('character/spider3.gif')" title="spider man">
+        <img src="character/spider3.gif" alt="spider man" />
+      </li>   
+      <li onclick="changeCharacter('character/hulk.gif')" title="hulk">
+        <img src="character/hulk.gif" alt="hulk" />
+      </li>  
+       
+      <li onclick="changeCharacter('character/cap1.gif')" title="captain america">
+        <img src="character/cap1.gif" alt="captain america" />
+      </li> 
+      <li onclick="changeCharacter('character/ben.gif')" title="ben 10">
+        <img src="character/ben.gif" alt="ben 10" />
+      </li>
+      <li onclick="changeCharacter('character/bem1.gif')" title="ben 10">
+        <img src="character/bem1.gif" alt="ben 10" />
+      </li>
+      <li onclick="changeCharacter('character/ben2.gif')" title="ben 10">
+        <img src="character/ben2.gif" alt="ben 10" />
+      </li>
+      <li onclick="changeCharacter('character/tanjiro.gif')" title="kimistu no yaiba">
+        <img src="character/tanjiro.gif" alt="kimistu no yaiba" />
+      </li> 
+      <li onclick="changeCharacter('character/zenitsu.gif')" title="kimistu no yaiba">
+        <img src="character/zenitsu.gif" alt="kimistu no yaiba" />
+      </li> 
+      <li onclick="changeCharacter('character/jjk.gif')" title="jujutsu kaisen">
+        <img src="character/jjk.gif" alt="jujutsu kaisen" />
+      </li> 
+      <li onclick="changeCharacter('character/luffy1.gif')" title="one piece">
+        <img src="character/luffy1.gif" alt="one piece" />
+      </li>
+      <li onclick="changeCharacter('character/luffy.gif')" title="one piece">
+        <img src="character/luffy.gif" alt="one piece" />
+      </li>
+      <li onclick="changeCharacter('character/luffy2.gif')" title="one piece">
+        <img src="character/luffy2.gif" alt="one piece" />
+      </li>
+      <li onclick="changeCharacter('character/optimus.gif')" title="transformers">
+        <img src="character/optimus.gif" alt="transformers" />
+      </li>
+      <li onclick="changeCharacter('character/moodeng.gif')" title="moodeng">
+        <img src="character/moodeng.gif" alt="moodeng" />
+      </li> 
+      <li onclick="changeCharacter('character/Pikachu.gif')" title="Pikachu">
+        <img src="character/Pikachu.gif" alt="Pikachu" />
+      </li> 
+      <li onclick="changeCharacter('character/stitch.gif')" title="Stitch">
+        <img src="character/stitch.gif" alt="Stitch" />
+      </li>
+      <li onclick="changeCharacter('character/toothless.gif')" title="เขี้ยวกุด">
+        <img src="character/toothless.gif" alt="How to train your dragon" />
+      </li>
+      <li onclick="changeCharacter('character/mic.gif')" title="Mickey Mouse">
+        <img src="character/mic.gif" alt="Mickey Mouse" />
+      </li>
+      <li onclick="changeCharacter('character/mickey.gif')" title="Mickey Mouse">
+        <img src="character/mickey.gif" alt="Mickey Mouse" />
+      </li>
+      <li onclick="changeCharacter('character/yoshi.gif')" title="Yoshi">
+        <img src="character/yoshi.gif" alt="Yoshi" />
+      </li>
+      <li onclick="changeCharacter('character/yoshi1.gif')" title="Yoshi">
+        <img src="character/yoshi1.gif" alt="Yoshi" />
+      </li>
+      <li onclick="changeCharacter('character/tom.gif')" title="Tom and Jerry">
+        <img src="character/tom.gif" alt="Tom and Jerry" />
+      </li>
+      <li onclick="changeCharacter('character/tom1.gif')" title="Tom and Jerry">
+        <img src="character/tom1.gif" alt="Tom and Jerry" />
+      </li>
+      <li onclick="changeCharacter('character/jerrry.gif')" title="Tom and Jerry">
+        <img src="character/jerrry.gif" alt="Tom and Jerry" />
+      </li>
+      <li onclick="changeCharacter('character/jerrry1.gif')" title="Tom and Jerry">
+        <img src="character/jerrry1.gif" alt="Tom and Jerry" />
+      </li>    
+    </ul>
+  </div>
+  <div class="container">
+    <h1>การตรวจโรคตาเข</h1>
+    <div class="eyes-section">
+      <div class="eye-box">
+        <div class="video-wrapper">
+          <video id="combinedVideoElement" autoplay muted playsinline></video>
+          <canvas id="overlayCanvas"></canvas>
+          <img src="character/source.gif" alt="ตัวละครที่เลือก" id="characterImage">
+        </div>
+      </div>
+    </div>
+    <div class="button-row">
+      <button class="start-btn" onclick="turnStart()"><i class="fa-solid fa-play"></i> เริ่มตรวจ</button>
+      <button class="back-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
+    </div>
+    <div class="result-card"><i class="fa-solid fa-triangle-exclamation"></i> ผลการตรวจ: คุณมีอาการตาเข</div>
+    <div class="advice-card"><i class="fa-solid fa-circle-info"></i> คำแนะนำ: ควรพบจักษุแพทย์เพื่อรับการตรวจอย่างละเอียด</div>
+    <div class="footer">© 2025 ระบบช่วยคัดกรองอาการตาเขโดยใช้แนวทาง Cover/Uncover Test</div>
+  </div>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      } else {
+        hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      }
+    }
+    function changeCharacter(src) {
+      document.getElementById('characterImage').src = src;
+    }
+  </script>
+  <script type="module" src="backend_main.js"></script>
+</body>
+</html> 
+
+
+
+
+
+
+
+
+
