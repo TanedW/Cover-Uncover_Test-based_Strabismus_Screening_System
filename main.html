@@ -603,27 +603,49 @@
     </div>
     <div class="button-row">
       <button class="start-btn" onclick="turnStart()"><i class="fa-solid fa-play"></i> เริ่มตรวจ</button>
+      <div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:9999; 
+      align-items:center; justify-content:center;">
+    <div style="background:white; padding:30px; border-radius:10px; box-shadow:0 0 20px rgba(0,0,0,0.3); max-width:90%; text-align:center;">
+      <h2 id="popupTitle">✅ การตรวจเสร็จสิ้น</h2>
+      <p id="popupMessage">ระบบทำการตรวจตาดำเรียบร้อยแล้ว</p>
+      <button onclick="closePopup()" style="margin-top:20px; padding:10px 20px; background-color:#007B9D; color:white; border:none; border-radius:5px;">ปิด</button>
+    </div>
+  </div>
       <button class="back-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
     </div>
-    <div class="result-card"><i class="fa-solid fa-triangle-exclamation"></i> ผลการตรวจ: คุณมีอาการตาเข</div>
-    <div class="advice-card"><i class="fa-solid fa-circle-info"></i> คำแนะนำ: ควรพบจักษุแพทย์เพื่อรับการตรวจอย่างละเอียด</div>
+    <!-- <div class="result-card"><i class="fa-solid fa-triangle-exclamation"></i> ผลการตรวจ: คุณมีอาการตาเข</div>
+    <div class="advice-card"><i class="fa-solid fa-circle-info"></i> คำแนะนำ: ควรพบจักษุแพทย์เพื่อรับการตรวจอย่างละเอียด</div> -->
     <div class="footer">© 2025 ระบบช่วยคัดกรองอาการตาเขโดยใช้แนวทาง Cover/Uncover Test</div>
   </div>
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const hamburger = document.getElementById('hamburger');
-      sidebar.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      if (sidebar.classList.contains('active')) {
-        hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-      } else {
-        hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      }
+ function toggleSidebar(forceClose = false) {
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+    const isActive = sidebar.classList.contains('active');
+
+    if (forceClose || isActive) {
+      sidebar.classList.remove('active');
+      hamburger.classList.remove('active');
+      hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    } else {
+      sidebar.classList.add('active');
+      hamburger.classList.add('active');
+      hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
     }
+  }
     function changeCharacter(src) {
       document.getElementById('characterImage').src = src;
     }
+
+        window.showPopup = function(title = "✅ การตรวจเสร็จสิ้น", message = "ระบบทำการตรวจตาดำเรียบร้อยแล้ว") {
+      document.getElementById('popupTitle').textContent = title;
+      document.getElementById('popupMessage').textContent = message;
+      document.getElementById('popup').style.display = 'flex';
+    };
+
+    window.closePopup = function() {
+      document.getElementById('popup').style.display = 'none';
+    };
   </script>
   <script type="module" src="backend_main.js"></script>
 </body>
@@ -636,4 +658,10 @@
 
 
 
+
+
+
+
+
+2/2
 
